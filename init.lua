@@ -229,6 +229,29 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+
+  -- A better file browser with nice previews
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+  },
+  -- rust related plugins
+  {
+    'rust-lang/rust.vim',
+    ft = 'rust',
+    init = function()
+      vim.g.rustfmt_autosave = 1
+    end,
+  },
+  {
+    'simrat39/rust-tools.nvim',
+    ft = 'rust',
+    opts = {
+      inlay_hints = true,
+    },
+  },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'farmergreg/vim-lastplace', -- Open files at last cusror position
 
@@ -574,6 +597,9 @@ require('lazy').setup({
         gopls = {},
         pyright = {},
         rust_analyzer = {},
+        terraformls = {},
+        tailwindcss = {},
+        tsserver = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -915,6 +941,28 @@ require('lazy').setup({
     },
   },
 })
+
+--  See `:help lua-guide-autocommands`
+-- Oil auto open the file preview
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'OilEnter', -- Change this pattern to the correct one if necessary
+  callback = function()
+    local oil = require 'oil'
+    oil.open_preview()
+  end,
+})
+
+-- Configure code folding/folds
+vim.opt.foldmethod = 'indent'
+vim.api.nvim_create_autocmd({ 'BufWinLeave' }, {
+  pattern = { '*.*' },
+  command = 'mkview',
+})
+vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
+  pattern = { '*.*' },
+  command = 'silent! loadview',
+})
+vim.opt.foldlevelstart = 6
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
