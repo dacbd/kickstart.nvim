@@ -253,6 +253,12 @@ require('lazy').setup({
   },
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   'farmergreg/vim-lastplace', -- Open files at last cusror position
+  {
+    'supermaven-inc/supermaven-nvim',
+    config = function()
+      require('supermaven-nvim').setup {}
+    end,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -654,6 +660,8 @@ require('lazy').setup({
         nginx_language_server = {
           cmd = { 'nginx-language-server' },
         },
+        starlark_rust = {},
+        tilt = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
